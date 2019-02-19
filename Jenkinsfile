@@ -124,7 +124,7 @@ node ('hyp-x') { // trigger build on x86_64 node
       }
 
       // Run fabcar tests
-      stage("Run FabCar Tests") {
+      stage("Run Patient Tests") {
          // making the output color coded
          wrap([$class: 'AnsiColorBuildWrapper', 'colorMapName': 'xterm']) {
            try {
