@@ -1,8 +1,7 @@
 {
-    "name": "papernet-js",
-    "version": "0.0.1",
-    "description": "Papernet Contract",
-    "main": "index.js",
+    "name": "patient",
+    "version": "1.0.0",
+    "description": "Patient application implemented in JavaScript",
     "engines": {
         "node": ">=8",
         "npm": ">=5"
@@ -10,25 +9,22 @@
     "scripts": {
         "lint": "eslint .",
         "pretest": "npm run lint",
-        "test": "nyc mocha test --recursive",
-        "start": "fabric-chaincode-node start",
-        "mocha": "mocha test --recursive"
+        "test": "nyc mocha --recursive"
     },
     "engineStrict": true,
-    "author": "hyperledger",
+    "author": "Hyperledger",
     "license": "Apache-2.0",
     "dependencies": {
-        "fabric-contract-api": "~1.4.0",
-        "fabric-shim": "~1.4.0"
+        "fabric-ca-client": "~1.4.0",
+        "fabric-network": "~1.4.0"
     },
     "devDependencies": {
-        "chai": "^4.1.2",
-        "chai-as-promised": "^7.1.1",
-        "eslint": "^4.19.1",
+        "chai": "^4.2.0",
+        "eslint": "^5.9.0",
         "mocha": "^5.2.0",
-        "nyc": "^12.0.2",
-        "sinon": "^6.0.0",
-        "sinon-chai": "^3.2.0"
+        "nyc": "^13.1.0",
+        "sinon": "^7.1.1",
+        "sinon-chai": "^3.3.0"
     },
     "nyc": {
         "exclude": [

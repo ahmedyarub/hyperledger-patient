@@ -142,7 +142,7 @@ fabcar_Tests() {
                  echo
                  echo "npm version ------> $(npm -v)"
                  echo "node version ------> $(node -v)"
-                 echo "-----------> Execute FabCar Tests"
+                 echo "-----------> Execute Patient Tests"
                  ./fabcar.sh
 }
 Parse_Arguments $@
