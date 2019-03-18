@@ -42,7 +42,7 @@ class Patient extends Contract {
         return patientAsBytes.toString();
     }
 
-    async createPatient(ctx, patientNumber, id, tests) {
+    async createPatient(ctx, patientNumber, id) {
         console.info('============= START : Create Patient Record ===========');
 
         const patient = {
@@ -79,7 +79,10 @@ class Patient extends Contract {
                 }
 
                 if (Record.access.includes(',' + user + ',')) {
+                    console.info('Can access:' + Record);
                     allResults.push({Key, Record});
+                }else{
+                    console.info('Cannot access:' + Record);
                 }
             }
             if (res.done) {

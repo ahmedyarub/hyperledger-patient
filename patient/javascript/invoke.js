@@ -38,10 +38,22 @@ async function main() {
         // Get the contract from the network.
         const contract = network.getContract('patient');
 
+        var myArgs = process.argv.slice(2);
+
         // Submit the specified transaction.
-        // createPatient transaction - requires 5 argument, ex: ('createPatient', 'CAR12', 'Honda', 'Accord', 'Black', 'Tom')
-        // updatePatientRecord transaction - requires 2 args , ex: ('updatePatientRecord', 'CAR10', 'Dave')
-        await contract.submitTransaction('grantDoctor', 'PATIENT0', 'user1');
+        // createPatient transaction - requires 2 arguments, ex: ('createPatient', patientNumber, id)
+        // updatePatientRecord transaction - requires 2 args , ex: ('updatePatientRecord', patientNumber, newTests)
+        switch (myArgs[0]) {
+            case 'createPatient':
+                await contract.submitTransaction(myArgs[0], myArgs[1], myArgs[2]);
+                break;
+            case 'updatePatientRecord':
+                await contract.submitTransaction(myArgs[0], myArgs[1], myArgs[2]);
+                break;
+            case 'grantDoctor':
+                await contract.submitTransaction(myArgs[0], myArgs[1], myArgs[2]);
+                break;
+        }
         console.log('Transaction has been submitted');
 
         // Disconnect from the gateway.

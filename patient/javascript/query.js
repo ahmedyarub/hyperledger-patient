@@ -4,7 +4,7 @@
 
 'use strict';
 
-const { FileSystemWallet, Gateway } = require('fabric-network');
+const {FileSystemWallet, Gateway} = require('fabric-network');
 const fs = require('fs');
 const path = require('path');
 
@@ -30,7 +30,7 @@ async function main() {
 
         // Create a new gateway for connecting to our peer node.
         const gateway = new Gateway();
-        await gateway.connect(ccp, { wallet, identity: 'user1', discovery: { enabled: false } });
+        await gateway.connect(ccp, {wallet, identity: 'user1', discovery: {enabled: false}});
 
         // Get the network (channel) our contract is deployed to.
         const network = await gateway.getNetwork('mychannel');
@@ -38,10 +38,20 @@ async function main() {
         // Get the contract from the network.
         const contract = network.getContract('patient');
 
+        var myArgs = process.argv.slice(2);
+
         // Evaluate the specified transaction.
-        // queryPatient transaction - requires 1 argument, ex: ('queryPatient', 'CAR4')
-        // queryAllPatients transaction - requires no arguments, ex: ('queryAllPatients')
-        const result = await contract.evaluateTransaction('queryAllPatients', 'user1');
+        // queryPatient transaction - requires 1 argument, ex: ('queryPatient', 'PATIENT3', 'user1')
+        // queryAllPatients transaction - requires no arguments, ex: ('queryAllPatients', 'user1')
+        switch (myArgs[0]) {
+            case 'queryPatient':
+                var result = await contract.evaluateTransaction(myArgs[0], myArgs[1], myArgs[2]);
+                break;
+            case 'queryAllPatients':
+                var result = await contract.evaluateTransaction(myArgs[0], myArgs[1]);
+                break;
+        }
+
         console.log(`Transaction has been evaluated, result is: ${result.toString()}`);
 
     } catch (error) {
