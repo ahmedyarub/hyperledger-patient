@@ -35,6 +35,7 @@ async function main() {
         // Submit the specified transaction.
         // createPatient transaction - requires 2 arguments, ex: ('createPatient', patientNumber, id)
         // updatePatientRecord transaction - requires 2 args , ex: ('updatePatientRecord', patientNumber, newTests)
+        // grantDoctor transaction - requires 2 args , ex: ('grantDoctor', 'user1', 'PATIENT0)
         switch (myArgs[0]) {
             case 'createPatient':
                 await contract.submitTransaction(myArgs[0], myArgs[1], myArgs[2]);
