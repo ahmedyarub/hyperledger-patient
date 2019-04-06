@@ -26,7 +26,7 @@ class Patient extends Contract {
         console.info('============= END : Initialize Ledger ===========');
     }
 
-    async queryPatient(ctx, patientNumber, user) {
+    async queryPatient(ctx, user, patientNumber) {
         const patientAsBytes = await ctx.stub.getState(patientNumber); // get the patient from chaincode state
         if (!patientAsBytes || patientAsBytes.length === 0) {
             throw new Error(`${patientNumber} does not exist`);
@@ -34,7 +34,7 @@ class Patient extends Contract {
 
         const patient = JSON.parse(patientAsBytes.toString());
 
-        if (!patient.access.includes(',' + user + ',')) {
+        if (user != 'admin' && !patient.access.includes(',' + user + ',')) {
             throw new Error(`Access denied for user ${user}`);
         }
 
@@ -51,6 +51,8 @@ class Patient extends Contract {
             tests: '',
             access: ','
         };
+
+        patient.docType = 'patientrecord';
 
         await ctx.stub.putState(patientNumber, Buffer.from(JSON.stringify(patient)));
         console.info('============= END : Create Patient Record ===========');
@@ -78,10 +80,10 @@ class Patient extends Contract {
                     Record = res.value.value.toString('utf8');
                 }
 
-                if (Record.access.includes(',' + user + ',')) {
+                if (user == 'admin' || Record.access.includes(',' + user + ',')) {
                     console.info('Can access:' + Record);
                     allResults.push({Key, Record});
-                }else{
+                } else {
                     console.info('Cannot access:' + Record);
                 }
             }
@@ -108,7 +110,7 @@ class Patient extends Contract {
         console.info('============= END : updatePatientRecord ===========');
     }
 
-    async grantDoctor(ctx, patientNumber, doctorName) {
+    async grantDoctor(ctx, doctorName, patientNumber) {
         console.info('============= START : grantDoctor ===========');
 
         const patientAsBytes = await ctx.stub.getState(patientNumber); // get the patient from chaincode state
