@@ -36,6 +36,7 @@ async function main() {
         // createPatient transaction - requires 2 arguments, ex: ('createPatient', patientNumber, id)
         // updatePatientRecord transaction - requires 2 args , ex: ('updatePatientRecord', patientNumber, newTests)
         // grantDoctor transaction - requires 2 args , ex: ('grantDoctor', 'user1', 'PATIENT0)
+        // ungrantDoctor transaction - requires 2 args , ex: ('grantDoctor', 'user1', 'PATIENT0)
         switch (myArgs[0]) {
             case 'createPatient':
                 await contract.submitTransaction(myArgs[0], myArgs[1], myArgs[2]);
@@ -44,6 +45,9 @@ async function main() {
                 await contract.submitTransaction(myArgs[0], myArgs[1], myArgs[2]);
                 break;
             case 'grantDoctor':
+                await contract.submitTransaction(myArgs[0], myArgs[1], myArgs[2]);
+                break;
+            case 'ungrantDoctor':
                 await contract.submitTransaction(myArgs[0], myArgs[1], myArgs[2]);
                 break;
         }

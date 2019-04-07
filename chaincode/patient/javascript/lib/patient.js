@@ -104,7 +104,7 @@ class Patient extends Contract {
             throw new Error(`${patientNumber} does not exist`);
         }
         const patient = JSON.parse(patientAsBytes.toString());
-        patient.owner = newTests;
+        patient.tests = newTests;
 
         await ctx.stub.putState(patientNumber, Buffer.from(JSON.stringify(patient)));
         console.info('============= END : updatePatientRecord ===========');
@@ -131,6 +131,25 @@ class Patient extends Contract {
     }
 
 
+    async ungrantDoctor(ctx, doctorName, patientNumber) {
+        console.info('============= START : grantDoctor ===========');
+
+        const patientAsBytes = await ctx.stub.getState(patientNumber); // get the patient from chaincode state
+        if (!patientAsBytes || patientAsBytes.length === 0) {
+            throw new Error(`${patientNumber} does not exist`);
+        }
+
+        console.info('Getting patient data');
+        const patient = JSON.parse(patientAsBytes.toString());
+
+        if (patient.access.includes(doctorName) === true) {
+            console.info('Adding permission');
+            patient.access = patient.access.replace(doctorName + ',', '');
+
+            await ctx.stub.putState(patientNumber, Buffer.from(JSON.stringify(patient)));
+        }
+        console.info('============= END : grantDoctor ===========');
+    }
 }
 
 module.exports = Patient;

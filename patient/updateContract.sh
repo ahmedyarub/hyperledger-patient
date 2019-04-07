@@ -16,4 +16,3 @@ cd ../patient/
 
 cd javascript
 node enrollAdmin.js
-node registerUser.js
