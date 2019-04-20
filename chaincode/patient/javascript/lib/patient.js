@@ -26,6 +26,54 @@ class Patient extends Contract {
         console.info('============= END : Initialize Ledger ===========');
     }
 
+    async getAllResults(iterator, isHistory) {
+        let allResults = [];
+        while (true) {
+            let res = await iterator.next();
+
+            if (res.value && res.value.value.toString()) {
+                let jsonRes = {};
+                console.log(res.value.value.toString('utf8'));
+
+                if (isHistory && isHistory === true) {
+                    jsonRes.TxId = res.value.tx_id;
+                    jsonRes.Timestamp = res.value.timestamp;
+                    jsonRes.IsDelete = res.value.is_delete.toString();
+                    try {
+                        jsonRes.Value = JSON.parse(res.value.value.toString('utf8'));
+                    } catch (err) {
+                        console.log(err);
+                        jsonRes.Value = res.value.value.toString('utf8');
+                    }
+                } else {
+                    jsonRes.Key = res.value.key;
+                    try {
+                        jsonRes.Record = JSON.parse(res.value.value.toString('utf8'));
+                    } catch (err) {
+                        console.log(err);
+                        jsonRes.Record = res.value.value.toString('utf8');
+                    }
+                }
+                allResults.push(jsonRes);
+            }
+            if (res.done) {
+                console.log('end of data');
+                await iterator.close();
+                console.info(allResults);
+                return allResults;
+            }
+        }
+    }
+
+    async getLedgerHistory(ctx, patient) {
+        console.info('- start getLedgerHistory: %s\n', patient);
+
+        let resultsIterator = await ctx.stub.getHistoryForKey(patient);
+        let results = await this.getAllResults(resultsIterator, true);
+
+        return Buffer.from(JSON.stringify(results));
+    }
+
     async queryPatient(ctx, user, patientNumber) {
         const patientAsBytes = await ctx.stub.getState(patientNumber); // get the patient from chaincode state
         if (!patientAsBytes || patientAsBytes.length === 0) {
@@ -129,7 +177,6 @@ class Patient extends Contract {
         }
         console.info('============= END : grantDoctor ===========');
     }
-
 
     async ungrantDoctor(ctx, doctorName, patientNumber) {
         console.info('============= START : grantDoctor ===========');

@@ -35,12 +35,23 @@ async function main() {
         // Evaluate the specified transaction.
         // queryPatient transaction - requires 1 argument, ex: ('queryPatient', 'PATIENT3', 'user1')
         // queryAllPatients transaction - requires no arguments, ex: ('queryAllPatients', 'user1')
+        // getLedgerHistory transaction - requires no arguments, ex: ('getLedgerHistory', 'patient0')
         switch (myArgs[0]) {
             case 'queryPatient':
                 var result = await contract.evaluateTransaction(myArgs[0], myArgs[1], myArgs[2]);
                 break;
             case 'queryAllPatients':
                 var result = await contract.evaluateTransaction(myArgs[0], myArgs[1]);
+                break;
+            case 'getLedgerHistory':
+                var tmp_result = await contract.evaluateTransaction(myArgs[0], myArgs[1]);
+
+                var result = '';
+
+                JSON.parse(tmp_result).data.forEach(function (element) {
+                    result = result + String.fromCharCode(element);
+                });
+
                 break;
         }
 
