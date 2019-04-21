@@ -13,7 +13,7 @@ class Patient extends Contract {
         const patients = [
             {
                 id: '1',
-                tests: 'glucos: 1mgs/ml',
+                tests: 'cough|syrup',
                 access: ','
             }
         ];
