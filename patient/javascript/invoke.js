@@ -4,7 +4,7 @@
 
 'use strict';
 
-const { FileSystemWallet, Gateway } = require('fabric-network');
+const {FileSystemWallet, Gateway} = require('fabric-network');
 const fs = require('fs');
 const path = require('path');
 
@@ -22,7 +22,7 @@ async function main() {
 
         // Create a new gateway for connecting to our peer node.
         const gateway = new Gateway();
-        await gateway.connect(ccp, { wallet, identity: 'admin', discovery: { enabled: false } });
+        await gateway.connect(ccp, {wallet, identity: 'admin', discovery: {enabled: false}});
 
         // Get the network (channel) our contract is deployed to.
         const network = await gateway.getNetwork('mychannel');
@@ -34,7 +34,7 @@ async function main() {
 
         // Submit the specified transaction.
         // createPatient transaction - requires 2 arguments, ex: ('createPatient', patientNumber, id)
-        // updatePatientRecord transaction - requires 2 args , ex: ('updatePatientRecord', patientNumber, newTests)
+        // updatePatientRecord transaction - requires 2 args , ex: ('updatePatientRecord', patientNumber, doctor, diagnosis, treatment)
         // grantDoctor transaction - requires 2 args , ex: ('grantDoctor', 'user1', 'PATIENT0)
         // ungrantDoctor transaction - requires 2 args , ex: ('grantDoctor', 'user1', 'PATIENT0)
         switch (myArgs[0]) {
@@ -42,7 +42,9 @@ async function main() {
                 await contract.submitTransaction(myArgs[0], myArgs[1], myArgs[2]);
                 break;
             case 'updatePatientRecord':
-                await contract.submitTransaction(myArgs[0], myArgs[1], myArgs[2]);
+                var diagnosis = '';
+
+                await contract.submitTransaction(myArgs[0], myArgs[1], myArgs[2], fs.readFileSync(myArgs[3].toString()).toString(), fs.readFileSync(myArgs[4].toString()).toString());
                 break;
             case 'grantDoctor':
                 await contract.submitTransaction(myArgs[0], myArgs[1], myArgs[2]);
