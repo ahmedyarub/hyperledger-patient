@@ -30,29 +30,29 @@ async function main() {
         // Get the contract from the network.
         const contract = network.getContract('patient');
 
-        var myArgs = process.argv.slice(2);
+        let myArgs = process.argv.slice(2);
 
         // Evaluate the specified transaction.
-        // queryPatient transaction - requires 1 argument, ex: ('queryPatient', 'PATIENT3', 'user1')
+        // queryPatient transaction - requires 1 argument, ex: ('queryPatient', 'user1', 'PATIENT3')
         // queryAllPatients transaction - requires no arguments, ex: ('queryAllPatients', 'user1')
         // getLedgerHistory transaction - requires no arguments, ex: ('getLedgerHistory', 'patient0')
         switch (myArgs[0]) {
-            case 'queryPatient':
-                var result = await contract.evaluateTransaction(myArgs[0], myArgs[1], myArgs[2]);
-                break;
-            case 'queryAllPatients':
-                var result = await contract.evaluateTransaction(myArgs[0], myArgs[1]);
-                break;
-            case 'getLedgerHistory':
-                var tmp_result = await contract.evaluateTransaction(myArgs[0], myArgs[1]);
+        case 'queryPatient':
+            var result = await contract.evaluateTransaction(myArgs[0], myArgs[1], myArgs[2]);
+            break;
+        case 'queryAllPatients':
+            var result = await contract.evaluateTransaction(myArgs[0], myArgs[1]);
+            break;
+        case 'getLedgerHistory':
+            var tmp_result = await contract.evaluateTransaction(myArgs[0], myArgs[1]);
 
-                var result = '';
+            var result = '';
 
-                JSON.parse(tmp_result).data.forEach(function (element) {
-                    result = result + String.fromCharCode(element);
-                });
+            JSON.parse(tmp_result).data.forEach(function (element) {
+                result = result + String.fromCharCode(element);
+            });
 
-                break;
+            break;
         }
 
         console.log(result.toString());

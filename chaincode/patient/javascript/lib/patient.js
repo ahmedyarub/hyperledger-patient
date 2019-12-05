@@ -15,6 +15,11 @@ class Patient extends Contract {
                 id: '1',
                 diagnosis: 'cough',
                 treatment: 'syrup',
+                emirates_id: '11111111-2',
+                date_of_birth: '1/1/2000',
+                place_of_birth: 'Dubai',
+                gender: 'M',
+                phone: '551234567',
                 access: ',',
                 lastupdater: ''
             }
@@ -84,7 +89,7 @@ class Patient extends Contract {
 
         const patient = JSON.parse(patientAsBytes.toString());
 
-        if (user != 'admin' && !patient.access.includes(',' + user + ',')) {
+        if (user !== 'admin' && !patient.access.includes(',' + user + ',')) {
             throw new Error(`Access denied for user ${user}`);
         }
 
@@ -92,7 +97,7 @@ class Patient extends Contract {
         return patientAsBytes.toString();
     }
 
-    async createPatient(ctx, patientNumber, id) {
+    async createPatient(ctx, patientNumber, id, emirates_id, date_of_birth, place_of_birth, gender, phone) {
         console.info('============= START : Create Patient Record ===========');
 
         const patient = {
@@ -100,6 +105,11 @@ class Patient extends Contract {
             docType: 'patient',
             diagnosis: '',
             treatment: '',
+            emirates_id: emirates_id,
+            date_of_birth: date_of_birth,
+            place_of_birth: place_of_birth,
+            gender: gender,
+            phone: phone,
             access: ',',
             lastupdater: ''
         };
@@ -132,7 +142,7 @@ class Patient extends Contract {
                     Record = res.value.value.toString('utf8');
                 }
 
-                if (user == 'admin' || Record.access.includes(',' + user + ',')) {
+                if (user === 'admin' || Record.access.includes(',' + user + ',')) {
                     console.info('Can access:' + Record);
                     allResults.push({Key, Record});
                 } else {
@@ -158,7 +168,7 @@ class Patient extends Contract {
         const patient = JSON.parse(patientAsBytes.toString());
         patient.diagnosis = diagnosis;
         patient.treatment = treatment;
-        patient.lastupdater = doctor
+        patient.lastupdater = doctor;
         await ctx.stub.putState(patientNumber, Buffer.from(JSON.stringify(patient)));
         console.info('============= END : updatePatientRecord ===========');
     }

@@ -3,7 +3,7 @@
 
 rm -Rf javascript/wallet
 
-cd ../basic-network/
+cd ../basic-network/ || exit
 ./stop.sh
 ./teardown.sh
 
@@ -11,8 +11,8 @@ docker rmi dev-peer0.org1.example.com-patient-1.0-1e340af5e396df79db7957f48efcf4
 docker rmi hyperledger/fabric-peer -f
 docker container prune -f
 
-cd ../patient/
+cd ../patient/ || exit
 ./startPatient.sh javascript
 
-cd javascript
+cd javascript || exit
 node enrollAdmin.js
