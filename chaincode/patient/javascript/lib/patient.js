@@ -13,8 +13,15 @@ class Patient extends Contract {
         const patients = [
             {
                 id: '1',
-                diagnosis: 'cough',
-                treatment: 'syrup',
+                record_id: '12324',
+                record_date: '01/01/2019',
+                height: '175',
+                weight: '80',
+                mass: '2',
+                pressure: '10',
+                allergies: 'none',
+                symptoms: 'fever',
+                diagnosis: 'cold',
                 emirates_id: '11111111-2',
                 date_of_birth: '1/1/2000',
                 place_of_birth: 'Dubai',
@@ -97,14 +104,21 @@ class Patient extends Contract {
         return patientAsBytes.toString();
     }
 
-    async createPatient(ctx, patientNumber, id, emirates_id, date_of_birth, place_of_birth, gender, phone) {
+    async createPatient(ctx, patientNumber, id, record_id, emirates_id, date_of_birth, place_of_birth, gender, phone) {
         console.info('============= START : Create Patient Record ===========');
 
         const patient = {
-            id,
-            docType: 'patient',
+            id: id,
+            record_id: record_id,
+            record_date: '',
+            height: '',
+            weight: '',
+            mass: '',
+            pressure: '',
+            allergies: '',
+            symptoms: '',
             diagnosis: '',
-            treatment: '',
+            docType: 'patient',
             emirates_id: emirates_id,
             date_of_birth: date_of_birth,
             place_of_birth: place_of_birth,
@@ -158,7 +172,7 @@ class Patient extends Contract {
         }
     }
 
-    async updatePatientRecord(ctx, patientNumber, doctor, diagnosis, treatment) {
+    async updatePatientRecord(ctx, patientNumber, doctor, record_date, height, weight, mass, pressure, allergies, symptoms, diagnosis) {
         console.info('============= START : updatePatientRecord ===========');
 
         const patientAsBytes = await ctx.stub.getState(patientNumber); // get the patient from chaincode state
@@ -166,9 +180,15 @@ class Patient extends Contract {
             throw new Error(`${patientNumber} does not exist`);
         }
         const patient = JSON.parse(patientAsBytes.toString());
+        patient.record_date = record_date;
+        patient.height = height;
+        patient.weight = weight;
+        patient.mass = mass;
+        patient.pressure = pressure;
+        patient.allergies = allergies;
+        patient.symptoms = symptoms;
         patient.diagnosis = diagnosis;
-        patient.treatment = treatment;
-        patient.lastupdater = doctor;
+
         await ctx.stub.putState(patientNumber, Buffer.from(JSON.stringify(patient)));
         console.info('============= END : updatePatientRecord ===========');
     }

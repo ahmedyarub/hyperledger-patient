@@ -29,16 +29,16 @@ async function main() {
         let myArgs = process.argv.slice(2);
 
         // Submit the specified transaction.
-        // createPatient transaction - requires 7 arguments, ex: ('createPatient', patientNumber, id, emirates_id, date_of_birth, place_of_birth, gender, phone)
-        // updatePatientRecord transaction - requires 2 args , ex: ('updatePatientRecord', patientNumber, doctor, diagnosis, treatment)
+        // createPatient transaction - requires 8 arguments, ex: ('createPatient', patientNumber, id, record_id, emirates_id, date_of_birth, place_of_birth, gender, phone)
+        // updatePatientRecord transaction - requires 10 args , ex: ('updatePatientRecord', patientNumber, doctor, record_date, height, weight, mass, pressure, allergies, symptoms, diagnosis)
         // grantDoctor transaction - requires 2 args , ex: ('grantDoctor', 'user1', 'PATIENT0)
         // ungrantDoctor transaction - requires 2 args , ex: ('grantDoctor', 'user1', 'PATIENT0)
         switch (myArgs[0]) {
         case 'createPatient':
-            await contract.submitTransaction(myArgs[0], myArgs[1], myArgs[2], myArgs[3], myArgs[4], myArgs[5], myArgs[6], myArgs[7]);
+            await contract.submitTransaction(myArgs[0], myArgs[1], myArgs[2], myArgs[3], myArgs[4], myArgs[5], myArgs[6], myArgs[7], myArgs[8]);
             break;
         case 'updatePatientRecord':
-            await contract.submitTransaction(myArgs[0], myArgs[1], myArgs[2], fs.readFileSync(myArgs[3].toString()).toString(), fs.readFileSync(myArgs[4].toString()).toString());
+            await contract.submitTransaction(myArgs[0], myArgs[1], myArgs[2], myArgs[3], myArgs[4], myArgs[5], myArgs[6], myArgs[7], myArgs[8], myArgs[9], myArgs[10]);
             break;
         case 'grantDoctor':
             await contract.submitTransaction(myArgs[0], myArgs[1], myArgs[2]);
